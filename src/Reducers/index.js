@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux'
 import { TEST1, TEST2 } from '../Actions'
+import { posts } from './post'
 
 function test1(state=0, action) {
   switch(action.type) {
@@ -27,5 +28,6 @@ function test2(state="karin", action) {
 
 export default combineReducers({
   test1,
-  test2
+  test2,
+  posts
 })

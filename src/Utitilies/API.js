@@ -11,11 +11,11 @@ const headers = {
 
 export const getCategories = () =>
   fetch(`${api}/categories`, { headers })
-    .then(res = res.json())
+    .then(res => res.json())
 
 export const getPosts = () =>
   fetch(`${api}/posts`, { headers })
-    .then(res = res.json())
+    .then(res => res.json())
 
 export const postAPost = (newPost) =>
   fetch(`${api}/posts`, {
@@ -58,7 +58,7 @@ export const deleteAPost = (id) =>
 
 export const getComments = (id) =>
   fetch(`${api}/posts/${id}/comments`, { headers })
-    .then(res = res.json())
+    .then(res => res.json())
 
 export const addAComment = ( newComment ) =>
   fetch(`${api}/comments`, {
