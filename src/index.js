@@ -10,7 +10,7 @@ import logger from 'redux-logger'
 import thunk from 'redux-thunk';
 import { BrowserRouter } from 'react-router-dom'
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION__ || compose
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 const store = createStore(
   reducer,
