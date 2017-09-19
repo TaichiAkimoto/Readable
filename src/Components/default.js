@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { fetchPosts, fetchCategories } from '../Actions/post'
+import {
+  fetchPosts,
+  fetchCategories,
+  changeCategory
+} from '../Actions/post'
+export const ShowAllPost = "ShowAllPost"
 
 class Default extends Component {
   componentDidMount() {
@@ -8,24 +13,33 @@ class Default extends Component {
     this.props.getCategories();
   }
   render() {
-    const { posts, categories } = this.props
-    console.log(categories[0]);
+    const { posts, categories, category, filterCategory } = this.props
+    let posts_display = Object.keys(posts).map(index => posts[index])
+    if(category !== ShowAllPost) {
+      posts_display = posts_display.filter(post => post.category === category)
+    }
+    let categories_displey = Object.keys(categories).map(index => categories[index])
+
     return (
       <div className="App">
         <div className="categories-default">
-          {Object.keys(categories).map(index => (
-            <span key={categories[index].name}>
-              {categories[index].name}
-            </span>
+          <button onClick={() => filterCategory(ShowAllPost)}>show all</button>
+          {categories_displey.map(catego => (
+            <button
+              key={catego.name}
+              onClick={() => filterCategory(catego.name)}
+            >
+              {catego.name}
+            </button>
           ))}
         </div>
         <ul>
-          {Object.keys(posts).map(index => (
-            <li key={posts[index].id} className="posts-default">
-              title : {posts[index].title}<br/>
-              body : {posts[index].body}<br/>
-              author : {posts[index].author}<br/>
-              category : {posts[index].category}
+          {posts_display.map(post => (
+            <li key={post.id} className="posts-default">
+              title : {post.title}<br/>
+              body : {post.body}<br/>
+              author : {post.author}<br/>
+              category : {post.category}
             </li>
           ))}
         </ul>
@@ -34,17 +48,19 @@ class Default extends Component {
   }
 }
 
-function mapStateToProps ({ posts, categories }) {
+function mapStateToProps ({ posts, categories, category }) {
   return {
-    posts: posts,
-    categories: categories,
+    posts,
+    categories,
+    category
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
     getPosts: () => dispatch(fetchPosts()),
-    getCategories: () => dispatch(fetchCategories())
+    getCategories: () => dispatch(fetchCategories()),
+    filterCategory: (category) => dispatch(changeCategory(category))
   }
 }
 
