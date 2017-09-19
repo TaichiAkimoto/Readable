@@ -26,3 +26,11 @@
 .posts-default {
   text-align: left;
 }
+
+.categories-default {
+  test-align: left;
+}
+
+span{
+    margin-right: 10px;
+}
