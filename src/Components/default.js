@@ -7,9 +7,16 @@ class Default extends Component {
     this.props.getPosts();
   }
   render() {
+    const { posts } = this.props
     return (
       <div className="App">
-        Default
+        {Object.keys(posts).map(index => (
+          <li key={posts[index].id} className="posts-default">
+            title : {posts[index].title}<br/>
+            body : {posts[index].body}<br/>
+            author : {posts[index].author}<br/>
+          </li>
+        ))}
       </div>
     );
   }
