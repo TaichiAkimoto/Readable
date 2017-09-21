@@ -2,18 +2,29 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import {
   fetchPosts,
-  fetchCategories,
-  changeCategory
+  fetchCategories
 } from '../Actions/post'
-export const ShowAllPost = "ShowAllPost"
+import { ShowAllPost, VoteScore, DateCreated} from '../Utitilies/constants'
+const SortContent = [VoteScore, DateCreated]
 
 class Default extends Component {
+  state = {
+    category: ShowAllPost,
+    sortOrder: VoteScore
+  }
+  changeCategory(category) {
+    this.setState({ category })
+  }
+  changeSortOrder(sortOrder) {
+    this.setState({ sortOrder })
+  }
   componentDidMount() {
     this.props.getPosts();
     this.props.getCategories();
   }
   render() {
-    const { posts, categories, category, filterCategory } = this.props
+    const { category, sortOrder } = this.state
+    const { posts, categories } = this.props
     let posts_display = Object.keys(posts).map(index => posts[index])
     if(category !== ShowAllPost) {
       posts_display = posts_display.filter(post => post.category === category)
@@ -23,14 +34,21 @@ class Default extends Component {
     return (
       <div className="App">
         <div className="categories-default">
-          <button onClick={() => filterCategory(ShowAllPost)}>show all</button>
+          <button onClick={() => this.changeSortOrder()}>change Order</button>
+          <button onClick={() => this.changeCategory(ShowAllPost)}>show all</button>
           {categories_displey.map(catego => (
             <button
               key={catego.name}
-              onClick={() => filterCategory(catego.name)}
-            >
-              {catego.name}
-            </button>
+              onClick={() => this.changeCategory(catego.name)}
+            >{catego.name}</button>
+          ))}
+        </div>
+        <div className="sortOrder-default">
+          {SortContent.map(sort => (
+            <button
+              key={sort}
+              onClick={() => this.changeSortOrder(sort)}
+            >{sort}</button>
           ))}
         </div>
         <ul>
@@ -39,7 +57,8 @@ class Default extends Component {
               title : {post.title}<br/>
               body : {post.body}<br/>
               author : {post.author}<br/>
-              category : {post.category}
+              category : {post.category}<br/>
+              voteScore: {post.voteScore}<br/>
             </li>
           ))}
         </ul>
@@ -51,16 +70,14 @@ class Default extends Component {
 function mapStateToProps ({ posts, categories, category }) {
   return {
     posts,
-    categories,
-    category
+    categories
   }
 }
 
 function mapDispatchToProps (dispatch) {
   return {
     getPosts: () => dispatch(fetchPosts()),
-    getCategories: () => dispatch(fetchCategories()),
-    filterCategory: (category) => dispatch(changeCategory(category))
+    getCategories: () => dispatch(fetchCategories())
   }
 }
 
