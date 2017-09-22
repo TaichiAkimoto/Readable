@@ -4,10 +4,10 @@ import PropTypes from 'prop-types'
 
 class CreateEdit extends Component {
   state = {
-    createOrEdit: 'Create New Post'
+    create: true
   }
   static propTypes = {
-    onSubmitForm: PropTypes.func.isRequired
+    onSubmitForm: PropTypes.func.isRequired,
   }
   handleSubmit = (e) => {
     e.preventDefault()
@@ -15,7 +15,13 @@ class CreateEdit extends Component {
     console.log(values);
     this.props.onSubmitForm()
   }
+  componentDidMount() {
+    if(this.props.match.params.id){
+      this.setState({create: false})
+    }
+  }
   render() {
+    const { create } = this.state
     return (
       <div className="App">
         <form onSubmit={this.handleSubmit}>
@@ -24,7 +30,7 @@ class CreateEdit extends Component {
             <input type='text' name='body' placeholder='Body' /><br/>
             <input type='text' name='author' placeholder='Author' /><br/>
             <input type='text' name='category' placeholder='Category' /><br/>
-            <button>{ this.state.createOrEdit }</button>
+            <button>{create ? 'Create new Post' : 'Edit this Post'}</button>
           </div>
         </form>
       </div>

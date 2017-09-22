@@ -74,7 +74,7 @@ class Default extends Component {
         </ul>
         <Link
             className="new-post"
-            to="/create/0"
+            to="/create"
           >Create New Post</Link>
       </div>
     );
