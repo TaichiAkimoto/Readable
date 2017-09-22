@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Route } from 'react-router-dom'
-import { Default, Category, Post, CreateEdit } from './index'
+import { Posts, Category, Post, CreateEdit } from './index'
 
 class App extends Component {
   render() {
     return (
       <div className="App">
         <Route exact path='/' render={() => (
-          <Default />
+          <Posts />
           )}
         />
         <Route path='/category/:category' render={() => (

@@ -1,57 +1,40 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
-import {
-  fetchPosts,
-  fetchCategories
-} from '../Actions/post'
 import { ShowAllPost, VoteScore, DateCreated} from '../Utitilies/constants'
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 var sortBy = require('sort-by');
 const SortContent = [VoteScore, DateCreated]
 
 class Default extends Component {
-  state = {
-    category: ShowAllPost,
-    sortOrder: VoteScore
-  }
-  changeCategory(category) {
-    this.setState({ category })
+  static propTypes = {
+    category: PropTypes.string.isRequired,
+    categories: PropTypes.array.isRequired,
+    posts: PropTypes.array.isRequired
   }
   changeSortOrder(sortOrder) {
     this.setState({ sortOrder })
   }
-  componentDidMount() {
-    if(!this.props.posts.length){
-      this.props.getPosts();
-      this.props.getCategories();
-    }
-  }
   render() {
-    const { category, sortOrder } = this.state
-    const { posts, categories } = this.props
-    let posts_display = Object.keys(posts).map(index => posts[index])
+    const { category, categories, posts } = this.props
     if(category !== ShowAllPost) {
-      posts_display = posts_display.filter(post => post.category === category)
+      posts = posts.filter(post => post.category === category)
     }
-    let categories_displey = Object.keys(categories).map(index => categories[index])
-
-    if(sortOrder === VoteScore) {
-      posts_display.sort(sortBy('-voteScore'))
+    if(category === VoteScore) {
+      posts.sort(sortBy('-voteScore'))
     } else {
-      posts_display.sort(sortBy('timestamp'))
+      posts.sort(sortBy('-timestamp'))
     }
 
     return (
       <div className="App">
         <div className="categories-default">
-          <button onClick={() => this.changeSortOrder()}>change Order</button>
-          <button onClick={() => this.changeCategory(ShowAllPost)}>show all</button>
-          {categories_displey.map(catego => (
-            <button
+          <Link to={'/'}>show all</Link>
+          {categories.map(catego => (
+            <Link
               key={catego.name}
-              onClick={() => this.changeCategory(catego.name)}
-            >{catego.name}</button>
+              to={'/category/'+catego.name}
+            >{catego.name}</Link>
           ))}
         </div>
         <div className="sortOrder-default">
@@ -63,7 +46,7 @@ class Default extends Component {
           ))}
         </div>
         <ul>
-          {posts_display.map(post => (
+          {posts.map(post => (
             <li key={post.id} className="posts-default">
               title : {post.title}<br/>
               body : {post.body}<br/>
@@ -83,20 +66,4 @@ class Default extends Component {
   }
 }
 
-function mapStateToProps ({ posts, categories }) {
-  return {
-    posts,
-    categories
-  }
-}
-function mapDispatchToProps (dispatch) {
-  return {
-    getPosts: () => dispatch(fetchPosts()),
-    getCategories: () => dispatch(fetchCategories())
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Default)
+export default Default

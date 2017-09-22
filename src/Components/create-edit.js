@@ -4,7 +4,6 @@ import {
    createPost
 } from '../Actions/post'
 import serializeForm from 'form-serialize'
-// import PropTypes from 'prop-types'
 import AlertContainer from 'react-alert'
 import CalendarIcon from 'react-icons/lib/fa/calendar-plus-o'
 
@@ -15,9 +14,6 @@ class CreateEdit extends Component {
   state = {
     create: true
   }
-  // static propTypes = {
-    // onSubmitForm: PropTypes.func.isRequired,
-  // }
   handleSubmit = (e) => {
     e.preventDefault()
     const values = serializeForm(e.target, { hash: true })
