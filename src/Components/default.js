@@ -5,6 +5,7 @@ import {
   fetchCategories
 } from '../Actions/post'
 import { ShowAllPost, VoteScore, DateCreated} from '../Utitilies/constants'
+var sortBy = require('sort-by');
 const SortContent = [VoteScore, DateCreated]
 
 class Default extends Component {
@@ -30,6 +31,12 @@ class Default extends Component {
       posts_display = posts_display.filter(post => post.category === category)
     }
     let categories_displey = Object.keys(categories).map(index => categories[index])
+
+    if(sortOrder === VoteScore) {
+      posts_display.sort(sortBy('-voteScore'))
+    } else {
+      posts_display.sort(sortBy('timestamp'))
+    }
 
     return (
       <div className="App">
@@ -59,6 +66,7 @@ class Default extends Component {
               author : {post.author}<br/>
               category : {post.category}<br/>
               voteScore: {post.voteScore}<br/>
+              timestamp: {post.timestamp}
             </li>
           ))}
         </ul>
