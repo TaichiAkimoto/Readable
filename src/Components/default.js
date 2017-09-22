@@ -22,8 +22,10 @@ class Default extends Component {
     this.setState({ sortOrder })
   }
   componentDidMount() {
-    this.props.getPosts();
-    this.props.getCategories();
+    if(!this.props.posts.length){
+      this.props.getPosts();
+      this.props.getCategories();
+    }
   }
   render() {
     const { category, sortOrder } = this.state
@@ -81,13 +83,12 @@ class Default extends Component {
   }
 }
 
-function mapStateToProps ({ posts, categories, category }) {
+function mapStateToProps ({ posts, categories }) {
   return {
     posts,
     categories
   }
 }
-
 function mapDispatchToProps (dispatch) {
   return {
     getPosts: () => dispatch(fetchPosts()),

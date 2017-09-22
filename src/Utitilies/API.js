@@ -25,7 +25,7 @@ export const postAPost = (newPost) =>
       ...headers,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ newPost })
+    body: JSON.stringify(newPost)
   }).then(res => res.json())
 
 export const voteForAPost = (id, upOrDown) =>

@@ -35,5 +35,5 @@ export const newPost = ( newPost ) => ({
 export const createPost = (values) => dispatch => (
   API
     .postAPost(values)
-      .then(res => dispatch(newPost(values)))
+      .then(res => dispatch(newPost({...values, ...res})))
 )

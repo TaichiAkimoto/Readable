@@ -5,6 +5,7 @@
   "dependencies": {
     "form-serialize": "^0.7.2",
     "prop-types": "^15.5.10",
+    "randomatic": "^1.1.7",
     "react": "^15.6.1",
     "react-alert": "^2.3.0",
     "react-dom": "^15.6.1",

@@ -5,10 +5,7 @@ export const posts = (state={}, action) => {
     case GET_ALL_POST:
       return action.posts
     case NEW_POST:
-      return {
-        ...state,
-        posts: action.posts
-      }
+      return [...state, action.posts]
     default:
       return state
   }
