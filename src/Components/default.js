@@ -5,6 +5,8 @@ import {
   fetchCategories
 } from '../Actions/post'
 import { ShowAllPost, VoteScore, DateCreated} from '../Utitilies/constants'
+import { Link } from 'react-router-dom'
+
 var sortBy = require('sort-by');
 const SortContent = [VoteScore, DateCreated]
 
@@ -70,6 +72,10 @@ class Default extends Component {
             </li>
           ))}
         </ul>
+        <Link
+            className="new-post"
+            to="/create/0"
+          >Create New Post</Link>
       </div>
     );
   }

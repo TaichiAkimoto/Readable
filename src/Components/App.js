@@ -19,8 +19,12 @@ class App extends Component {
           <Post />
           )}
         />
-        <Route exact path='/create/:id' render={() => (
-          <CreateEdit />
+        <Route path='/create/:id' render={({ history }) => (
+          <CreateEdit
+            onSubmitForm={() => {
+              history.push('/')
+            }}
+            />
           )}
         />
       </div>
