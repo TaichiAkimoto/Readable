@@ -3,6 +3,7 @@ import * as API from '../Utitilies/API';
 export const GET_ALL_POST = 'GET_ALL_POST'
 export const GET_ALL_CATEGORY = 'GET_ALL_CATEGORY'
 export const CHANGE_CATEGORY = 'CHANGE_CATEGORY'
+export const NEW_POST = "NEW_POST"
 
 export const getAllPost = (posts) => ({
   type: GET_ALL_POST,
@@ -26,7 +27,13 @@ export const fetchCategories = () => dispatch => (
       .then(categories => dispatch(getAllCategory(categories)))
 )
 
-export const changeCategory = (category) => ({
-  type: CHANGE_CATEGORY,
-  category
+export const newPost = ( newPost ) => ({
+  type: NEW_POST,
+  posts: newPost
 })
+
+export const createPost = (values) => dispatch => (
+  API
+    .postAPost(values)
+      .then(res => dispatch(newPost(values)))
+)

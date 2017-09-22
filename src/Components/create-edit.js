@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import {
+   createPost
+} from '../Actions/post'
 import serializeForm from 'form-serialize'
 import PropTypes from 'prop-types'
 import AlertContainer from 'react-alert'
 import CalendarIcon from 'react-icons/lib/fa/calendar-plus-o'
+
+const uuidv1 = require('uuid/v1');
+const alertOptions = { offset: 14, position: 'top center', theme: 'dark', time: 5000, transition: 'scale'}
 
 class CreateEdit extends Component {
   state = {
@@ -14,23 +21,20 @@ class CreateEdit extends Component {
   handleSubmit = (e) => {
     e.preventDefault()
     const values = serializeForm(e.target, { hash: true })
-    if(this.checkOptions(values)){
+    if(this.checkOptions(values))
       this.props.onSubmitForm()
-    }
   }
   checkOptions = (values) => {
-    if(values.title&&values.body&&values.author&&values.category)
+    if(values.title&&values.body&&values.author&&values.category){
+      values.id = uuidv1()
+      values.timestamp = Date.now()
+      this.props.createNewPost(values)
       return true
-    else
+    }
+    else{
       this.showAlert()
       return false
-  }
-  alertOptions = {
-    offset: 14,
-    position: 'top center',
-    theme: 'dark',
-    time: 5000,
-    transition: 'scale'
+    }
   }
   showAlert = () => {
     this.msg.show('empty!!', {
@@ -48,7 +52,7 @@ class CreateEdit extends Component {
     const { create } = this.state
     return (
       <div className="App">
-        <AlertContainer ref={a => this.msg = a} {...this.alertOptions} />
+        <AlertContainer ref={a => this.msg = a} {...alertOptions} />
         <form onSubmit={this.handleSubmit}>
           <div>
             <input type='text' name='title' placeholder='Title' /><br/>
@@ -63,4 +67,12 @@ class CreateEdit extends Component {
   }
 }
 
-export default CreateEdit
+function mapDispatchToProps (dispatch) {
+  return {
+    createNewPost: (values) => dispatch(createPost(values))
+  }
+}
+export default connect(
+  null,
+  mapDispatchToProps
+)(CreateEdit)
