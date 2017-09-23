@@ -11,8 +11,10 @@ class App extends Component {
           <Posts />
           )}
         />
-        <Route path='/category/:category' render={() => (
-          <Category />
+        <Route path='/category/:category' render={({ match }) => (
+          <Category
+            match={match}
+          />
           )}
         />
         <Route exact path='/post/:id' render={() => (

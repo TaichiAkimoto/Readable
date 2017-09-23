@@ -4,6 +4,7 @@ export const GET_ALL_POST = 'GET_ALL_POST'
 export const GET_ALL_CATEGORY = 'GET_ALL_CATEGORY'
 export const CHANGE_CATEGORY = 'CHANGE_CATEGORY'
 export const NEW_POST = "NEW_POST"
+export const CHANGE_SORT_ORDER = "CHANGE_SORT_ORDER"
 
 export const getAllPost = (posts) => ({
   type: GET_ALL_POST,
@@ -37,3 +38,8 @@ export const createPost = (values) => dispatch => (
     .postAPost(values)
       .then(res => dispatch(newPost({...values, ...res})))
 )
+
+export const changeSortOrder = (order) => ({
+  type: CHANGE_SORT_ORDER,
+  order
+})

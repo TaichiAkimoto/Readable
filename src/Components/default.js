@@ -1,52 +1,56 @@
 import React, { Component } from 'react';
-import { ShowAllPost, VoteScore, DateCreated} from '../Utitilies/constants'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import {
+  fetchPosts,
+  fetchCategories,
+  changeSortOrder,
+} from '../Actions/post'
+import { ShowAllPost, Sorts} from '../Utitilies/constants'
 import PropTypes from 'prop-types'
 
 var sortBy = require('sort-by');
-const SortContent = [VoteScore, DateCreated]
 
 class Default extends Component {
   static propTypes = {
     category: PropTypes.string.isRequired,
-    categories: PropTypes.array.isRequired,
-    posts: PropTypes.array.isRequired
   }
-  changeSortOrder(sortOrder) {
-    this.setState({ sortOrder })
+  componentDidMount() {
+    if(!this.props.posts.length){
+      this.props.getPosts();
+      this.props.getCategories();
+    }
   }
   render() {
-    const { category, categories, posts } = this.props
+    const { category, posts, categories, sortOrder, changeOrder } = this.props
+    let posts_display = Object.keys(posts).map(index => posts[index])
+    let categories_display = Object.keys(categories).map(index => categories[index])
     if(category !== ShowAllPost) {
-      posts = posts.filter(post => post.category === category)
+      posts_display = posts_display.filter(post => post.category === category)
     }
-    if(category === VoteScore) {
-      posts.sort(sortBy('-voteScore'))
-    } else {
-      posts.sort(sortBy('-timestamp'))
-    }
+    posts_display.sort(sortBy('-'+sortOrder))
 
     return (
       <div className="App">
         <div className="categories-default">
           <Link to={'/'}>show all</Link>
-          {categories.map(catego => (
+          {categories_display.map(catego => (
             <Link
               key={catego.name}
               to={'/category/'+catego.name}
-            >{catego.name}</Link>
+            >{catego.name}&emsp;</Link>
           ))}
         </div>
         <div className="sortOrder-default">
-          {SortContent.map(sort => (
+          {Sorts.map(sort => (
             <button
               key={sort}
-              onClick={() => this.changeSortOrder(sort)}
+              onClick={() => changeOrder(sort)}
             >{sort}</button>
           ))}
         </div>
         <ul>
-          {posts.map(post => (
+          {posts_display.map(post => (
             <li key={post.id} className="posts-default">
               title : {post.title}<br/>
               body : {post.body}<br/>
@@ -66,4 +70,22 @@ class Default extends Component {
   }
 }
 
-export default Default
+function mapStateToProps (state) {
+  return {
+    posts: state.posts,
+    categories: state.categories,
+    sortOrder: state.sortOrder
+  }
+}
+function mapDispatchToProps (dispatch) {
+  return {
+    getPosts: () => dispatch(fetchPosts()),
+    getCategories: () => dispatch(fetchCategories()),
+    changeOrder: (order) => dispatch(changeSortOrder(order))
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Default)
