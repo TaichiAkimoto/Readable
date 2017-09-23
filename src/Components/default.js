@@ -5,8 +5,9 @@ import {
   fetchPosts,
   fetchCategories,
   changeSortOrder,
+  voteForPost,
 } from '../Actions/post'
-import { ShowAllPost, Sorts} from '../Utitilies/constants'
+import { ShowAllPost, Sorts } from '../Utitilies/constants'
 import PropTypes from 'prop-types'
 
 var sortBy = require('sort-by');
@@ -22,7 +23,7 @@ class Default extends Component {
     }
   }
   render() {
-    const { category, posts, categories, sortOrder, changeOrder } = this.props
+    const { category, posts, categories, sortOrder, changeOrder, vote } = this.props
     let posts_display = Object.keys(posts).map(index => posts[index])
     let categories_display = Object.keys(categories).map(index => categories[index])
     if(category !== ShowAllPost) {
@@ -51,14 +52,18 @@ class Default extends Component {
         </div>
         <ul>
           {posts_display.map(post => (
-            <li key={post.id} className="posts-default">
-              title : {post.title}<br/>
-              body : {post.body}<br/>
-              author : {post.author}<br/>
-              category : {post.category}<br/>
-              voteScore: {post.voteScore}<br/>
-              timestamp: {post.timestamp}
-            </li>
+            <div key={post.id} className="posts-default">
+              <li>
+                title : {post.title}<br/>
+                body : {post.body}<br/>
+                author : {post.author}<br/>
+                category : {post.category}<br/>
+                voteScore: {post.voteScore}<br/>
+                timestamp: {post.timestamp}
+              </li>
+              <button onClick={() => vote(post.id, {"option": "upVote"})}>upVote</button>
+              <button onClick={() => vote(post.id, {"option": "downVote"})}>downVote</button>
+            </div>
           ))}
         </ul>
         <Link
@@ -81,7 +86,8 @@ function mapDispatchToProps (dispatch) {
   return {
     getPosts: () => dispatch(fetchPosts()),
     getCategories: () => dispatch(fetchCategories()),
-    changeOrder: (order) => dispatch(changeSortOrder(order))
+    changeOrder: (order) => dispatch(changeSortOrder(order)),
+    vote: (id, upOrDown) => dispatch(voteForPost(id, upOrDown))
   }
 }
 

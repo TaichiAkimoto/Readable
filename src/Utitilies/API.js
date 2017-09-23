@@ -35,7 +35,7 @@ export const voteForAPost = (id, upOrDown) =>
       ...headers,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ upOrDown })
+    body: JSON.stringify(upOrDown)
   }).then(res => res.json())
 
 export const editAPost = (id, newPost) =>

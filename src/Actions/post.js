@@ -5,6 +5,7 @@ export const GET_ALL_CATEGORY = 'GET_ALL_CATEGORY'
 export const CHANGE_CATEGORY = 'CHANGE_CATEGORY'
 export const NEW_POST = "NEW_POST"
 export const CHANGE_SORT_ORDER = "CHANGE_SORT_ORDER"
+export const NEW_VOTE_SCORE = "NEW_VOTE_SCORE"
 
 export const getAllPost = (posts) => ({
   type: GET_ALL_POST,
@@ -43,3 +44,14 @@ export const changeSortOrder = (order) => ({
   type: CHANGE_SORT_ORDER,
   order
 })
+
+export const changeScore = (updatedScore) => ({
+  type: NEW_VOTE_SCORE,
+  post: updatedScore
+})
+
+export const voteForPost = (id, upOrDown) => dispatch => (
+  API
+    .voteForAPost(id, upOrDown)
+      .then(res => dispatch(changeScore(res)))
+)
