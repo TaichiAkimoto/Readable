@@ -63,12 +63,15 @@ class Default extends Component {
               </li>
               <button onClick={() => vote(post.id, {"option": "upVote"})}>upVote</button>
               <button onClick={() => vote(post.id, {"option": "downVote"})}>downVote</button>
+              <Link
+                to={'/update/'+post.id}
+              >Edit</Link>
             </div>
           ))}
         </ul>
         <Link
             className="new-post"
-            to="/create"
+            to={"/update/new"}
           >Create New Post</Link>
       </div>
     );

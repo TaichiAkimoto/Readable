@@ -6,34 +6,32 @@ export const CHANGE_CATEGORY = 'CHANGE_CATEGORY'
 export const NEW_POST = "NEW_POST"
 export const CHANGE_SORT_ORDER = "CHANGE_SORT_ORDER"
 export const NEW_VOTE_SCORE = "NEW_VOTE_SCORE"
+export const EDIT_POST = "EDIT_POST"
 
-export const getAllPost = (posts) => ({
+const getAllPost = (posts) => ({
   type: GET_ALL_POST,
   posts
 })
-
 export const fetchPosts = () => dispatch => (
   API
     .getPosts()
       .then(posts => dispatch(getAllPost(posts)))
 );
 
-export const getAllCategory = (categories) => ({
+const getAllCategory = (categories) => ({
   type: GET_ALL_CATEGORY,
   categories
 })
-
 export const fetchCategories = () => dispatch => (
   API
     .getCategories()
       .then(categories => dispatch(getAllCategory(categories)))
 )
 
-export const newPost = ( newPost ) => ({
+const newPost = ( newPost ) => ({
   type: NEW_POST,
   posts: newPost
 })
-
 export const createPost = (values) => dispatch => (
   API
     .postAPost(values)
@@ -45,13 +43,23 @@ export const changeSortOrder = (order) => ({
   order
 })
 
-export const changeScore = (updatedScore) => ({
+const changeScore = (updatedScore) => ({
   type: NEW_VOTE_SCORE,
   post: updatedScore
 })
-
 export const voteForPost = (id, upOrDown) => dispatch => (
   API
     .voteForAPost(id, upOrDown)
       .then(res => dispatch(changeScore(res)))
+)
+
+const amendPost = (updatedPost) => ({
+  type: EDIT_POST,
+  post: updatedPost
+})
+
+export const editPost = (id, body) => dispatch => (
+  API
+   .editAPost(id, body)
+    .then(res => dispatch(amendPost(res)))
 )

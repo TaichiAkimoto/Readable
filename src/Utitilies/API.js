@@ -38,14 +38,14 @@ export const voteForAPost = (id, upOrDown) =>
     body: JSON.stringify(upOrDown)
   }).then(res => res.json())
 
-export const editAPost = (id, newPost) =>
+export const editAPost = (id, post) =>
   fetch(`${api}/posts/${id}`, {
     method: 'PUT',
     headers: {
       ...headers,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ newPost })
+    body: JSON.stringify(post)
   }).then(res => res.json())
 
 export const deleteAPost = (id) =>

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import {
-   createPost
+   createPost,
+   editPost
 } from '../Actions/post'
 import serializeForm from 'form-serialize'
 import AlertContainer from 'react-alert'
@@ -40,20 +41,24 @@ class CreateEdit extends Component {
     })
   }
   componentDidMount() {
-    if(this.props.match.params.id){
+    if(this.props.match.params.id !== "new"){
       this.setState({create: false})
     }
   }
   render() {
     const { create } = this.state
-    const { categories } = this.props
+    const { posts, categories } = this.props
+    let posts_display = Object.keys(posts).map(index => posts[index])
+    let post = {}
+    if(!create)
+      post = posts_display.filter(post => post.id === this.props.match.params.id)[0]
     let categories_displey = Object.keys(categories).map(index => categories[index])
     return (
       <div className="App">
         <AlertContainer ref={a => this.msg = a} {...alertOptions} />
         <form onSubmit={this.handleSubmit}>
           <div>
-            <input type='text' name='title' placeholder='Title' /><br/>
+            <input type='text' name='title' placeholder='Title' defaultValue={!create&&"baka"}/><br/>
             <input type='text' name='body' placeholder='Body' /><br/>
             <input type='text' name='author' placeholder='Author' /><br/>
             <select name='category' placeholder='Category'>
@@ -74,12 +79,14 @@ class CreateEdit extends Component {
 
 function mapStateToProps(state) {
   return {
+    posts: state.posts,
     categories: state.categories
   }
 }
 function mapDispatchToProps (dispatch) {
   return {
-    createNewPost: (values) => dispatch(createPost(values))
+    createNewPost: (values) => dispatch(createPost(values)),
+    editAPost: (id, body) => dispatch(editPost(id, body))
   }
 }
 export default connect(

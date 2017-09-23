@@ -21,7 +21,7 @@ class App extends Component {
           <Post />
           )}
         />
-        <Route path='/create/' render={({ history, match }) => (
+        <Route path='/update/:id' render={({ history, match }) => (
           <CreateEdit
             match={match}
             onSubmitForm={() => {

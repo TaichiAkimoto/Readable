@@ -1,4 +1,4 @@
-import { GET_ALL_POST, GET_ALL_CATEGORY, NEW_POST, CHANGE_SORT_ORDER, NEW_VOTE_SCORE
+import { GET_ALL_POST, GET_ALL_CATEGORY, NEW_POST, CHANGE_SORT_ORDER, NEW_VOTE_SCORE, EDIT_POST
 } from '../Actions/post'
 
 export const posts = (state={}, action) => {
@@ -8,6 +8,7 @@ export const posts = (state={}, action) => {
     case NEW_POST:
       return [...state, action.posts]
     case NEW_VOTE_SCORE:
+    case EDIT_POST:
       let newState = state.filter(post => post.id !== action.post.id)
       return [...newState, action.post]
     default:
